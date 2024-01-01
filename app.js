@@ -1,28 +1,11 @@
+var app = require('./config/server');
 
-const createRouting = app => {
-  app.get('/', (req, res) => {
-    res.render("home/index");
-  })
-  
-  app.get('/formulario_inclusao_noticia', (req, res) => {
-    res.render("admin/form_add_noticia");
-  })
-  
-  app.get('/noticias', (req, res) => {
-    res.render("noticias/noticias");
-  })
-}
+var rotaNoticias = require('./app/routes/noticias')(app);
 
-/* -------------------- */
+var rotaHome = require('./app/routes/home')(app);
 
-const express = require('express');
-const app = express();
+var rotaFormInclusaoNoticia = require('./app/routes/form_inclusao_noticia')(app);
 
-app.set('view engine', 'ejs');
-
-createRouting(app);
-
-app.listen(3000, () => {
-  console.log('express server');
+app.listen(3000, function(){
+    console.log("Servidor ON");
 });
-
