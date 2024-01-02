@@ -1,6 +1,6 @@
 let http = require('http');
 
-let server = http.createServer(function(req,res){
+let server = http.createServer((req, res) => {
     var categoria = req.url;
     if(categoria == '/tecnologia'){
         res.end("<html><body>Notícias de Tecnologia</body></html>");
