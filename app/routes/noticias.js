@@ -1,11 +1,11 @@
-module.exports = app => {
-    app.get('/noticias', (req, res) => {
+module.exports = application => {
+    application.get('/noticias', (req, res) => {
 
-        let connection = app.config.dbConnection;
+        let connection = application.config.dbConnection;
+        let noticiasModel = application.app.models.noticiasModel;
 
-        connection.query("SELECT * FROM noticias", function (error, result) {
+        noticiasModel.getNoticias(connection, (error, result) => {
             res.render('noticias/noticias', { noticias: result });
         });
-
     });
 }

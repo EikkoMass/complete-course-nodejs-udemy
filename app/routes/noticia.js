@@ -1,11 +1,12 @@
-module.exports = app => {
-  app.get('/noticia', (req, res) => {
+module.exports = application => {
+  application.get('/noticia', (req, res) => {
 
-      let connection = app.config.dbConnection;
+    let connection = application.config.dbConnection;
+    let noticiasModel = application.app.models.noticiasModel;
 
-      connection.query(`SELECT * FROM noticias where id_noticia = ${2}`, function (error, result) {
-          res.render('noticias/noticia', { noticia: result });
-      });
+    noticiasModel.getNoticia(connection, function (error, result) {
+      res.render('noticias/noticia', { noticia: result });
+    });
 
   });
 }
