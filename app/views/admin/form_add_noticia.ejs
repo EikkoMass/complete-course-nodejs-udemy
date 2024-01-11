@@ -7,6 +7,17 @@
 	<body>
 
 		<h1>Adicionar notícia</h1>
+		<br />
+		<% if(typeof(validacao) !== "undefined" && validacao) { %>
+			<ul>
+				<% for(let i=0; i < validacao.length; i++) { %>
+					<li>
+						<%= validacao[i].msg %>
+					</li>
+				<% } %>
+			</ul>
+		<% } %>
+
 
 		<form action="/noticias/salvar" method="post">
 			<label>Titulo</label>

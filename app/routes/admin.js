@@ -17,7 +17,7 @@ module.exports = function (application) {
         let erros = req.validationErrors();
 
         if (erros) {
-            res.render('admin/form_add_noticia');
+            res.render('admin/form_add_noticia', { validacao: erros });
             return;
         }
 
