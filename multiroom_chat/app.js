@@ -19,10 +19,31 @@ io.on('connection', socket => {
   });
 
   socket.on('msgParaServidor', data => {
+    
+    /* dialogo */
+
     /* retorna para o usuario que requisitou o socket*/
     socket.emit('msgParaCliente', {apelido: data.apelido, mensagem: data.mensagem });
     
     /* retorna para todos os usuarios que estao conectados no socket (exceto o que requisitou)*/
     socket.broadcast.emit('msgParaCliente', {apelido: data.apelido, mensagem: data.mensagem });
+    
+    /* ------------------------- */
+
+
+    /* participantes */
+
+    if(parseInt(data.apelido_atualizado_nos_clientes) == 0)
+    {
+
+    /* retorna para o usuario que requisitou o socket*/
+    socket.emit('participantesParaCliente', {apelido: data.apelido });
+    
+    /* retorna para todos os usuarios que estao conectados no socket (exceto o que requisitou)*/
+    socket.broadcast.emit('participantesParaCliente', {apelido: data.apelido });
+
+    }
+     /* ------------------------- */
   });
+
 });
