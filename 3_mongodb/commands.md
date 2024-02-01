@@ -19,3 +19,16 @@ Comandos usados para consulta de banco
     db.alunos.find({idade: {$lte:30}}).pretty();
 
     db.alunos.find({sexo: {$ne:'M'}}).pretty();
+
+Comandos usados para consulta de banco (clausulas E / OU)
+
+    //sexo igual a 'F' E idade maior que 30
+    
+    db.alunos.find({sexo: {$eq:"F"}, idade: {$gt:30}});
+
+
+    //nome igual a 'Maria' OU nome igual a 'Jose'
+    
+    db.alunos.find({$or: [{nome: "Maria"}, {nome: "Jose"}]});
+
+
