@@ -1,4 +1,4 @@
-Comandos utilizados para a criacao do banco de dados e collections correspondentes.
+## Comandos utilizados para a criacao do banco de dados e collections correspondentes.
 
     use curso_mongodb;
 
@@ -10,7 +10,7 @@ Comandos utilizados para a criacao do banco de dados e collections correspondent
 
     db.alunos.insert({ nome: "Fernanda", idade: 32, sexo: 'F', matricula: 'hjk456', cursos_interesse: [{curso: 'Curso completo do Desenvolvedor NodeJS'}, {curso: 'Curso completo de desenvolvimento web - Crie 6 projetos'}]  });
 
-Comandos usados para consulta de banco
+## Comandos usados para consulta de banco
 
     db.alunos.find({nome: {$eq:"Jose"}});
 
@@ -20,7 +20,7 @@ Comandos usados para consulta de banco
 
     db.alunos.find({sexo: {$ne:'M'}}).pretty();
 
-Comandos usados para consulta de banco (clausulas E / OU)
+## Comandos usados para consulta de banco (clausulas E / OU)
 
     //sexo igual a 'F' E idade maior que 30
     
@@ -32,3 +32,14 @@ Comandos usados para consulta de banco (clausulas E / OU)
     db.alunos.find({$or: [{nome: "Maria"}, {nome: "Jose"}]});
 
 
+## Comandos usados para alterar registros no banco
+
+    db.alunos.update({nome: 'Jose'}, {$set: {nome: 'Joao'}})
+
+    db.alunos.update({nome: 'Maria'}, {$set: {idade: 26}})
+
+por padrao o mongodb entende que a atualizacao de registro se aplica apenas para 1 registro do banco, caso deseje atualizar todos os registros que a condicao bater, utilizar 'multi' como 'true'.
+
+    db.alunos.update({sexo: 'F'}, {$set: {sexo: 'Feminino'}}, {multi:true})
+
+⚠️ Em versoes mais recentes Collection.update() (comando usado na aula) se encontra deprecado, recomendado utilizar updateOne, updateMany ou bulkWrite.
