@@ -43,3 +43,17 @@ por padrao o mongodb entende que a atualizacao de registro se aplica apenas para
     db.alunos.update({sexo: 'F'}, {$set: {sexo: 'Feminino'}}, {multi:true})
 
 ⚠️ Em versoes mais recentes Collection.update() (comando usado na aula) se encontra deprecado, recomendado utilizar updateOne, updateMany ou bulkWrite.
+
+## Comandos usados para remover registros no banco
+
+    db.alunos.remove({nome: 'Maria'})
+
+    db.alunos.remove({idade: {$gt: 30})
+
+    db.alunos.remove({matricula: {$eq: 'abcd123'}})
+
+caso queira apagar apenas 1 registro, e necessario utilizar do segundo parametro chamado de 'justOne', que recebe um valor booleano de 'true' ou 'false'
+
+    db.alunos.remove({nome: 'Maria'}, true)
+
+⚠️ Em versoes mais recentes Collection.remove() (comando usado na aula) se encontra deprecado, recomendado utilizar deleteOne, deleteMany, findOneAndDelete ou bulkWrite.
