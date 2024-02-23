@@ -18,6 +18,12 @@ module.exports = {
       return;
     }
 
+    let connection  = application.config.dbConnection;
+
+    let UsuariosDAO = new application.app.models.UsuariosDAO(connection);
+    
+    UsuariosDAO.inserirUsuario(dadosForm);
+
     res.send('podemos cadastrar');
   }
 }

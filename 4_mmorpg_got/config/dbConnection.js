@@ -1,10 +1,13 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const DATABASE_NAME = 'got';
-const HOST_NAME = 'localhost';
+
+/* HOST_NAME as localhost if installed locally, if installed with docker, use 'docker inspect <CONTAINER>' to check the ipAddress to put here */
+const HOST_NAME = '172.17.0.2';
+
 const PORT = 27017;
 
-let connection = new MongoClient(`mongodb://${HOST_NAME}:${PORT}`,
+let connection = new MongoClient(`mongodb://${HOST_NAME}:${PORT}?directConnection=true&serverSelectionTimeoutMS=2000`,
   {
     serverApi: {
       version: ServerApiVersion.v1,
@@ -17,7 +20,7 @@ let connection = new MongoClient(`mongodb://${HOST_NAME}:${PORT}`,
 let connMongoDb = async function (callback) {
   try {
     await connection.connect();
-    callback(connection.db(DATABASE_NAME));
+    await callback(connection.db(DATABASE_NAME));
   } catch (error) {
     console.log(error);
   } finally {
