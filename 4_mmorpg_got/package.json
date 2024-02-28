@@ -1,7 +1,7 @@
 {
   "name": "mmorpg_got",
   "version": "1.0.0",
-  "description": "",
+  "description": "projeto de mmorpg para aprender integracao com banco nao relacional e regras de negocio",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
