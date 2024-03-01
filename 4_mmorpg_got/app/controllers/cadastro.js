@@ -21,8 +21,13 @@ module.exports = {
     let connection  = application.config.dbConnection;
 
     let UsuariosDAO = new application.app.models.UsuariosDAO(connection);
+    let JogoDAO = new application.app.models.JogoDAO(connection);
     
     UsuariosDAO.inserirUsuario(dadosForm);
+
+    //geracao dos parametros
+
+    JogoDAO.gerarParametros(dadosForm.usuario);
 
     res.send('podemos cadastrar');
   }
