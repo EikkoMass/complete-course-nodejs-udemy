@@ -19,5 +19,13 @@ module.exports = {
     req.session.destroy(function(err) {
       res.render('index',{validacao: {}});
     });
+  },
+
+  suditos: function(application, req, res) {
+    res.render('aldeoes', {validacao: {}});
+  },
+
+  pergaminhos: function(application, req, res) {
+    res.render('pergaminhos', {validacao: {}});
   }
 }
