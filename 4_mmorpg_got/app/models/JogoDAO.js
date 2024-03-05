@@ -17,14 +17,43 @@ JogoDAO.prototype.gerarParametros = function(usuario) {
   });
 }
 
-JogoDAO.prototype.iniciaJogo = function(res, usuario, casa, comando_invalido) {
+JogoDAO.prototype.iniciaJogo = function(res, usuario, casa, msg) {
   
   this._connection(async access => {
     const collection = access.collection('jogo');
 
     let jogo = await collection.findOne({usuario});
 
-    res.render('jogo', {img_casa: casa, jogo, comando_invalido})
+    res.render('jogo', {img_casa: casa, jogo, msg})
+  });
+}
+
+JogoDAO.prototype.acao = function(acao) {
+
+  this._connection(async access => {
+    const collection = access.collection('acao');
+
+    let date =  new Date();
+    let tempo = null;
+
+    switch (acao.acao) {
+      case 1:
+        tempo = 1 * 60 * 60000;
+        break;
+      case 2:
+        tempo = 2 * 60 * 60000;
+        break;
+      case 3:
+        tempo = 5 * 60 * 60000;
+        break;
+      case 4:
+        tempo = 5 * 60 * 60000;
+        break;
+    }
+
+    acao.acao_termina_em = date.getTime() + tempo;
+
+    await collection.insertOne(acao);
   });
 }
 
