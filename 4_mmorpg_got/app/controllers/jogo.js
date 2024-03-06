@@ -45,6 +45,12 @@ module.exports = {
       return;
     } 
 
+    let connection = application.config.dbConnection;
+    let JogoDAO = new application.app.models.JogoDAO(connection);
+    let usuario = req.session.usuario;
+
+    JogoDAO.getAcoes(usuario);
+
     res.render('pergaminhos', {validacao: {}});
   },
 
