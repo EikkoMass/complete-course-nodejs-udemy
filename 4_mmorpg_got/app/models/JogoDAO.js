@@ -36,7 +36,7 @@ JogoDAO.prototype.acao = function(acao) {
     let date =  new Date();
     let tempo = null;
 
-    switch (acao.acao) {
+    switch (parseInt(acao.acao)) {
       case 1:
         tempo = 1 * 60 * 60000;
         break;
@@ -57,12 +57,13 @@ JogoDAO.prototype.acao = function(acao) {
   });
 }
 
-JogoDAO.prototype.getAcoes = function(usuario) {
+JogoDAO.prototype.getAcoes = function(usuario, res) {
   this._connection(async access => {
     const collection = access.collection('acao');
 
     let acoes = await collection.find({usuario}).toArray();
-    console.log(acoes);
+
+    res.render('pergaminhos', {acoes});
   });
 }
 
