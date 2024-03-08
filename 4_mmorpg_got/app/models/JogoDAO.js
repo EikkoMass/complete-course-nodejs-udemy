@@ -61,7 +61,10 @@ JogoDAO.prototype.getAcoes = function(usuario, res) {
   this._connection(async access => {
     const collection = access.collection('acao');
 
-    let acoes = await collection.find({usuario}).toArray();
+    let date = new Date();
+    let momento_atual = date.getTime();
+
+    let acoes = await collection.find({usuario, acao_termina_em: {$gt: momento_atual}}).toArray();
 
     res.render('pergaminhos', {acoes});
   });

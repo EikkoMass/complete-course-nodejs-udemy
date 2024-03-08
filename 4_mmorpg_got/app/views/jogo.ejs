@@ -41,10 +41,23 @@
 					method: 'get',
 					success: function(data) {
 						$('#acoes').html(data);
+						
+						clearTimeout(timerId);
+						cronometro();
 					}
 				});
 			});
-		})
+		});
+
+		var timerId = null;
+
+		function cronometro() {
+			$('.tempo_restante').each(function() {
+				$(this).html(parseInt($(this).html()) - 1);
+			});
+
+			timerId = setTimeout('cronometro()', 1000);
+		}
 	</script>
 
 </head>
