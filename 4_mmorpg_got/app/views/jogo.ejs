@@ -51,10 +51,21 @@
 
 		var timerId = null;
 
-		function cronometro() {
-			$('.tempo_restante').each(function() {
-				$(this).html(parseInt($(this).html()) - 1);
-			});
+			function cronometro() {
+				$('.tempo_restante').each(function () {
+
+					const element = $(this);
+					let segundos_atuais = parseInt(element.html()) - 1;
+
+					if (segundos_atuais < 0) {
+						window.location.href = '/jogo?msg=C';
+					}
+
+
+					element.html(segundos_atuais);
+
+
+				});
 
 			timerId = setTimeout('cronometro()', 1000);
 		}
@@ -89,6 +100,14 @@
 					<strong>Acao realizada com sucesso!</strong>
 				</div>
 			
+				<% } %>
+
+				<% if(msg == 'C') { %>
+
+					<div class="alert alert-info msg">
+						<strong>Senhor, a atividade ordenada foi finalizada!</strong>
+					</div>
+				
 				<% } %>
 
 		<div class="row">
