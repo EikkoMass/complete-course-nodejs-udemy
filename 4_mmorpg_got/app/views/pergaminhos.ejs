@@ -20,7 +20,7 @@
 
 			%>
 
-			<li><%= acoes[i].quantidade%> <%=txtAcao%> <small>restam <span class="tempo_restante"><%=Math.round((acoes[i].acao_termina_em - momento_atual) / 1000) %></span> segundos - <a href="#">revogar ordem</a></small></li>
+			<li><%= acoes[i].quantidade%> <%=txtAcao%> <small>restam <span class="tempo_restante"><%=Math.round((acoes[i].acao_termina_em - momento_atual) / 1000) %></span> segundos - <a href="/revogar_acao?id_acao=<%=acoes[i]._id%>">revogar ordem</a></small></li>
 		
 		<% } %>
 	</ul>

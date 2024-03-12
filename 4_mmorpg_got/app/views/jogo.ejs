@@ -110,6 +110,22 @@
 				
 				<% } %>
 
+				<% if(msg == 'D') { %>
+
+					<div class="alert alert-info msg">
+						<strong>Senhor, sua ordem foi revogada!</strong>
+					</div>
+				
+				<% } %>
+
+				<% if(msg == 'E') { %>
+
+					<div class="alert alert-info msg">
+						<strong>Senhor, nao foi possivel revogar sua ordem!</strong>
+					</div>
+				
+				<% } %>
+
 		<div class="row">
 			<div class="col-sm-3 casa">
 				<img src="images/casa_<%=img_casa%>.jpg" />

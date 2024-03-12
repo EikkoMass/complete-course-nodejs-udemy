@@ -1,3 +1,5 @@
+const ObjectID = require('mongodb').ObjectId
+
 function JogoDAO(connection) {
   this._connection = connection;
 }
@@ -89,6 +91,23 @@ JogoDAO.prototype.getAcoes = function(usuario, res) {
     let acoes = await collection.find({usuario, acao_termina_em: {$gt: momento_atual}}).toArray();
 
     res.render('pergaminhos', {acoes});
+  });
+}
+
+JogoDAO.prototype.revogarAcao = function(_id, res) {
+  this._connection(async access => {
+    const collection = access.collection('acao');
+
+    let result = await collection.deleteOne({_id: new ObjectID(_id)});
+
+
+    if(result.deletedCount == 1)
+    {
+      res.redirect("jogo?msg=D");
+      return;
+    }
+
+    res.redirect("jogo?msg=E");
   });
 }
 
