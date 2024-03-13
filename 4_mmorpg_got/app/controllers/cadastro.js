@@ -29,6 +29,6 @@ module.exports = {
 
     JogoDAO.gerarParametros(dadosForm.usuario);
 
-    res.send('podemos cadastrar');
+    res.render('index', {msg: 'B', validacao: {}});
   }
 }
