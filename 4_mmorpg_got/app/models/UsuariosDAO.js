@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 function UsuariosDAO(connection) {
   this._connection = connection;
 }
@@ -5,6 +7,9 @@ function UsuariosDAO(connection) {
 UsuariosDAO.prototype.inserirUsuario = function (usuario) {
   this._connection(async access => {
     const collection = access.collection('usuarios');
+
+    usuario.senha = crypto.createHash('md5').update(usuario.senha).digest('hex');
+
     await collection.insertOne(usuario);
   });
 }
@@ -13,6 +18,9 @@ UsuariosDAO.prototype.autenticar = function (usuario, req, res) {
 
   this._connection(async access => {
     const collection = access.collection('usuarios');
+
+    usuario.senha = crypto.createHash('md5').update(usuario.senha).digest('hex');
+
     let result = await collection.find(usuario).toArray();
 
       if(result[0])
