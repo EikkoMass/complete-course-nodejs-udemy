@@ -4,14 +4,25 @@ const opcoes = {
   hostname: 'localhost',
   port: 80,
   path: '/',
+  method: 'post',
   headers: {
-    'Accept': 'application/json'
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
   }
 };
 
+
+// Content-Type
+let html = 'nome=Jose'; // application/x-www-form-urlencoded
+let json = {
+  nome: 'Jose'
+};
+
+let stringJson = JSON.stringify(json); // application/json
+
 const buffer_corpo_response = [];
 
-http.get(opcoes, function(res) {
+let req = http.request(opcoes, function(res) {
 
   res.on('data', function(pedaco) {
     buffer_corpo_response.push(pedaco);
@@ -26,3 +37,6 @@ http.get(opcoes, function(res) {
 
   // });
 });
+
+req.write(stringJson);
+req.end();
