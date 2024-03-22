@@ -12,3 +12,10 @@ const port = 8080;
 app.listen(port);
 
 console.log(`Servidor HTTP esta escutando a porta ${port}`);
+
+app.get('/', function(req, res) {
+
+  res.send({
+    msg: 'Hello'
+  });
+});
