@@ -49,6 +49,7 @@ app.get('/', function(req, res) {
   });
 });
 
+//POST (create)
 app.post('/api', async function(req, res)  {
   let dados = req.body;
   
@@ -64,5 +65,21 @@ app.post('/api', async function(req, res)  {
       res.json(error);
     }
     
+  });
+});
+
+//GET (ready)
+app.get('/api', async function(req, res)  {  
+  dbAction(async access => {
+    const collection = access.collection('postagens');
+    try
+    {
+      let data = await collection.find().toArray();
+      res.json(data);
+
+    } catch (error)
+    {
+      res.json(error);
+    }
   });
 });
