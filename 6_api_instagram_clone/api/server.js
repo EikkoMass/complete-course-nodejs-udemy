@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const app = express();
 
@@ -75,6 +75,22 @@ app.get('/api', async function(req, res)  {
     try
     {
       let data = await collection.find().toArray();
+      res.json(data);
+
+    } catch (error)
+    {
+      res.json(error);
+    }
+  });
+});
+
+//GET by Id (ready)
+app.get('/api/:id', async function(req, res)  {  
+  dbAction(async access => {
+    const collection = access.collection('postagens');
+    try
+    {
+      let data = await collection.find(new ObjectId(req.params.id)).toArray();
       res.json(data);
 
     } catch (error)
