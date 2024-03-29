@@ -99,3 +99,19 @@ app.get('/api/:id', async function(req, res)  {
     }
   });
 });
+
+//PUT by Id (update)
+app.put('/api/:id', async function(req, res)  { 
+  dbAction(async access => {
+    const collection = access.collection('postagens');
+    try
+    {
+      let data = await collection.updateOne({ _id: new ObjectId(req.params.id) }, {$set: {titulo: req.body.titulo}});
+      res.json(data);
+
+    } catch (error)
+    {
+      res.json(error);
+    }
+  });
+});
