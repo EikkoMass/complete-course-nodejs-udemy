@@ -115,3 +115,19 @@ app.put('/api/:id', async function(req, res)  {
     }
   });
 });
+
+//DELETE by Id (update)
+app.delete('/api/:id', async function(req, res)  { 
+  dbAction(async access => {
+    const collection = access.collection('postagens');
+    try
+    {
+      let data = await collection.deleteOne({ _id: new ObjectId(req.params.id) });
+      res.json(data);
+
+    } catch (error)
+    {
+      res.json(error);
+    }
+  });
+});
