@@ -53,12 +53,14 @@ app.get('/', function(req, res) {
 app.post('/api', async function(req, res)  {
   let dados = req.body;
   
+  res.setHeader('Access-Control-Allow-Origin', "*");
+
   dbAction(async access => {
     const collection = access.collection('postagens');
     try
     {
       let data = await collection.insertOne(dados);
-      res.json(records);
+      res.json(data);
 
     } catch (error)
     {
