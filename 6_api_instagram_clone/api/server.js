@@ -161,3 +161,30 @@ app.delete('/api/:id', async function(req, res)  {
     }
   });
 });
+
+app.get('/uploads/:imagem', async function (req, res) {
+
+  let img = req.params.imagem;
+
+  fs.readFile('./uploads/' + img, function(err, content) {
+    if(err)
+    {
+      res.status(400).json(err);
+      return;
+    }
+
+    res.writeHead(200, { 'content-type' : 'image/jpg'});
+    res.end(content);
+  });
+
+  dbAction(async access => {
+    const collection = access.collection('postagens');
+    try {
+      let data = await collection.deleteOne({ _id: new ObjectId(req.params.id) });
+      res.json(data);
+
+    } catch (error) {
+      res.json(error);
+    }
+  });
+});
