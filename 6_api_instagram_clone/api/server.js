@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const multiparty = require('connect-multiparty');
+const fs = require('fs');
 
 const app = express();
 
@@ -52,23 +53,45 @@ app.get('/', function(req, res) {
 });
 
 //POST (create)
-app.post('/api', async function(req, res)  {
-  let dados = req.body;
-  
+app.post('/api', async function(req, res)  {  
   res.setHeader('Access-Control-Allow-Origin', "*");
+
+  let date = new Date();
+  let timestamp = date.getTime();
+
+  let url_imagem = timestamp + "_" + req.files.arquivo.originalFilename;
+
+  let pathOrigem = req.files.arquivo.path;
+  let pathDestino = `./uploads/${url_imagem}`;
+
+
+  fs.copyFile(pathOrigem, pathDestino, function(err) {
+    console.log(err);
+    if(err)
+    {
+      res.status(500).json({error: err});
+      return;
+    }
+
+    fs.unlink(pathOrigem, function(err){});
+  });
+
+  const dados = {
+    url_imagem,
+    titulo: req.body.titulo
+  };
 
   dbAction(async access => {
     const collection = access.collection('postagens');
     try
     {
       let data = await collection.insertOne(dados);
-      res.json(data);
+      res.json({'status': "inclusao realizada com sucesso"});
 
     } catch (error)
     {
-      res.json(error);
+      res.json({'status': "erro"});
     }
-    
   });
 });
 
