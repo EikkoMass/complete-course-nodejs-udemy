@@ -97,6 +97,9 @@ app.post('/api', async function(req, res)  {
 
 //GET (ready)
 app.get('/api', async function(req, res)  {  
+
+  res.setHeader('Access-Control-Allow-Origin', "*");
+
   dbAction(async access => {
     const collection = access.collection('postagens');
     try
