@@ -9,6 +9,15 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(multiparty());
+app.use(function(req, res, next) {
+  
+  res.setHeader('Access-Control-Allow-Origin', "*");
+  res.setHeader('Access-Control-Allow-Methods', "GET. POST, PUT, DELETE");
+  res.setHeader('Access-Control-Allow-Headers', "content-type");
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  
+  next();
+});
 
 const port = 8080;
 
@@ -132,11 +141,21 @@ app.get('/api/:id', async function(req, res)  {
 
 //PUT by Id (update)
 app.put('/api/:id', async function(req, res)  { 
+
+  res.setHeader('Access-Control-Allow-Origin', "*");
+
   dbAction(async access => {
     const collection = access.collection('postagens');
     try
     {
-      let data = await collection.updateOne({ _id: new ObjectId(req.params.id) }, {$set: {titulo: req.body.titulo}});
+      let data = await collection.updateOne({ _id: new ObjectId(req.params.id) }, {
+        $push: {
+          comentarios: {
+            id_comentario: new ObjectId(),
+            comentario: req.body.comentario
+          }
+        }
+      });
       res.json(data);
 
     } catch (error)
