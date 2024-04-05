@@ -6,16 +6,16 @@ const fs = require('fs');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(multiparty());
-app.use(function(req, res, next) {
-  
+app.use(function (req, res, next) {
+
   res.setHeader('Access-Control-Allow-Origin', "*");
   res.setHeader('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE");
   res.setHeader('Access-Control-Allow-Headers', "content-type");
   res.setHeader('Access-Control-Allow-Credentials', true);
-  
+
   next();
 });
 
@@ -54,7 +54,7 @@ let dbAction = async function (callback) {
 
 console.log(`Servidor HTTP esta escutando a porta ${port}`);
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
 
   res.send({
     msg: 'Hello'
@@ -62,7 +62,7 @@ app.get('/', function(req, res) {
 });
 
 //POST (create)
-app.post('/api', async function(req, res)  {  
+app.post('/api', async function (req, res) {
   res.setHeader('Access-Control-Allow-Origin', "*");
 
   let date = new Date();
@@ -74,15 +74,14 @@ app.post('/api', async function(req, res)  {
   let pathDestino = `./uploads/${url_imagem}`;
 
 
-  fs.copyFile(pathOrigem, pathDestino, function(err) {
+  fs.copyFile(pathOrigem, pathDestino, function (err) {
     console.log(err);
-    if(err)
-    {
-      res.status(500).json({error: err});
+    if (err) {
+      res.status(500).json({ error: err });
       return;
     }
 
-    fs.unlink(pathOrigem, function(err){});
+    fs.unlink(pathOrigem, function (err) { });
   });
 
   const dados = {
@@ -92,62 +91,55 @@ app.post('/api', async function(req, res)  {
 
   dbAction(async access => {
     const collection = access.collection('postagens');
-    try
-    {
+    try {
       let data = await collection.insertOne(dados);
-      res.json({'status': "inclusao realizada com sucesso"});
+      res.json({ 'status': "inclusao realizada com sucesso" });
 
-    } catch (error)
-    {
-      res.json({'status': "erro"});
+    } catch (error) {
+      res.json({ 'status': "erro" });
     }
   });
 });
 
 //GET (ready)
-app.get('/api', async function(req, res)  {  
+app.get('/api', async function (req, res) {
 
   res.setHeader('Access-Control-Allow-Origin', "*");
 
   dbAction(async access => {
     const collection = access.collection('postagens');
-    try
-    {
+    try {
       let data = await collection.find().toArray();
       res.json(data);
 
-    } catch (error)
-    {
+    } catch (error) {
       res.json(error);
     }
   });
 });
 
 //GET by Id (ready)
-app.get('/api/:id', async function(req, res)  {  
+app.get('/api/:id', async function (req, res) {
   dbAction(async access => {
     const collection = access.collection('postagens');
-    try
-    {
+    try {
       let data = await collection.find(new ObjectId(req.params.id)).toArray();
       res.json(data);
 
-    } catch (error)
-    {
+    } catch (error) {
       res.json(error);
     }
   });
 });
 
 //PUT by Id (update)
-app.put('/api/:id', async function(req, res)  { 
+app.put('/api/:id', async function (req, res) {
 
   res.setHeader('Access-Control-Allow-Origin', "*");
 
   dbAction(async access => {
     const collection = access.collection('postagens');
-    try
-    {
+    try {
       let data = await collection.updateOne({ _id: new ObjectId(req.params.id) }, {
         $push: {
           comentarios: {
@@ -165,16 +157,18 @@ app.put('/api/:id', async function(req, res)  {
 });
 
 //DELETE by Id (update)
-app.delete('/api/:id', async function(req, res)  { 
+app.delete('/api/:id', async function (req, res) {
   dbAction(async access => {
     const collection = access.collection('postagens');
-    try
-    {
-      let data = await collection.deleteOne({ _id: new ObjectId(req.params.id) });
+    try {
+      let data = await collection.updateMany({}, {
+        $pull: {
+          comentarios: { id_comentario: new ObjectId(req.params.id) }
+        }
+      });
       res.json(data);
 
-    } catch (error)
-    {
+    } catch (error) {
       res.json(error);
     }
   });
@@ -184,9 +178,8 @@ app.get('/uploads/:imagem', async function (req, res) {
 
   let img = req.params.imagem;
 
-  fs.readFile('./uploads/' + img, function(err, content) {
-    if(err)
-    {
+  fs.readFile('./uploads/' + img, function (err, content) {
+    if (err) {
       res.status(400).json(err);
       return;
     }
@@ -200,7 +193,7 @@ app.get('/uploads/:imagem', async function (req, res) {
       }
     });
 
-    res.writeHead(200, { 'content-type' : 'image/jpg'});
+    res.writeHead(200, { 'content-type': 'image/jpg' });
     res.end(content);
   });
 
