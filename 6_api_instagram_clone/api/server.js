@@ -12,7 +12,7 @@ app.use(multiparty());
 app.use(function(req, res, next) {
   
   res.setHeader('Access-Control-Allow-Origin', "*");
-  res.setHeader('Access-Control-Allow-Methods', "GET. POST, PUT, DELETE");
+  res.setHeader('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE");
   res.setHeader('Access-Control-Allow-Headers', "content-type");
   res.setHeader('Access-Control-Allow-Credentials', true);
   
@@ -158,8 +158,7 @@ app.put('/api/:id', async function(req, res)  {
       });
       res.json(data);
 
-    } catch (error)
-    {
+    } catch (error) {
       res.json(error);
     }
   });
@@ -192,18 +191,17 @@ app.get('/uploads/:imagem', async function (req, res) {
       return;
     }
 
+    dbAction(async access => {
+      const collection = access.collection('postagens');
+      try {
+        await collection.deleteOne({ _id: new ObjectId(req.params.id) });
+      } catch (error) {
+        console.log(error);
+      }
+    });
+
     res.writeHead(200, { 'content-type' : 'image/jpg'});
     res.end(content);
   });
 
-  dbAction(async access => {
-    const collection = access.collection('postagens');
-    try {
-      let data = await collection.deleteOne({ _id: new ObjectId(req.params.id) });
-      res.json(data);
-
-    } catch (error) {
-      res.json(error);
-    }
-  });
 });
